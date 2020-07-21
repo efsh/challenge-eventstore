@@ -18,8 +18,8 @@ public class EventIteratorArray implements EventIterator {
 
     @Override
     public boolean moveNext() {
-        if (this.currentIndex < this.currentSize && this.eventList[++this.currentIndex] != null) {
-            this.currentIndex++;
+        // has next element?
+        if (++this.currentIndex < this.currentSize) {
             return true;
         }
         this.hasNext = false;
@@ -28,7 +28,8 @@ public class EventIteratorArray implements EventIterator {
 
     @Override
     public Event current() {
-        if (this.currentIndex == -1 || this.hasNext) {
+        // moveNext() was called or has next element?
+        if (this.currentIndex == -1 || !this.hasNext) {
             throw new IllegalStateException();
         }
         return this.eventList[this.currentIndex];
@@ -36,18 +37,19 @@ public class EventIteratorArray implements EventIterator {
 
     @Override
     public void remove() {
-        if (this.currentIndex == -1 || this.hasNext) {
+        // moveNext() was called or has next element?
+        if (this.currentIndex == -1 || !this.hasNext) {
             throw new IllegalStateException();
         }
-        List<Event> tempList = new ArrayList<>(Arrays.asList(this.eventList));
+        // Because we're using an array to implement the iterator, we need an auxiliary structure to remove
+        // the current element
+        final List<Event> tempList = new ArrayList<>(Arrays.asList(this.eventList));
         tempList.remove(this.currentIndex);
         this.eventList = tempList.toArray(new Event[0]);
     }
 
     @Override
     public void close() {
-        this.eventList = null;
-        this.currentIndex = -1;
-        this.hasNext = true;
+
     }
 }

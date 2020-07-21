@@ -7,7 +7,7 @@ import java.util.List;
 public class EventIteratorArray implements EventIterator {
 
     private Event[] eventList;
-    private int currentSize;
+    final private int currentSize;
     private int currentIndex = -1;
     private boolean hasNext = true;
 

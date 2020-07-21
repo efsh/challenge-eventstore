@@ -50,11 +50,13 @@ public class EventStoreTest {
     public void happySearchTest() {
         final Event foo1 = new Event("foo", 10L);
         final Event foo2 = new Event("foo", 20L);
+        final Event foo3 = new Event("foo", 40L);
         final Event bar = new Event("bar", 30L);
 
         final EventStore store = new EventStoreMemory();
         store.insert(foo1);
         store.insert(foo2);
+        store.insert(foo3);
         store.insert(bar);
 
         final EventIterator result = store.query("foo", 10L, 40L);
@@ -63,7 +65,7 @@ public class EventStoreTest {
         Assert.assertEquals(foo1, result.current());
         Assert.assertTrue(result.moveNext());
         Assert.assertEquals(foo2, result.current());
-        Assert.assertTrue(result.moveNext());
+        Assert.assertFalse(result.moveNext());
     }
 
 }

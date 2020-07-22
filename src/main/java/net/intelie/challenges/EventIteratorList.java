@@ -6,8 +6,19 @@ import java.util.*;
  * This is a LinkedList implementation of EventIterator
  * <p>
  *     Uses a synchronizedList (thread-safe) to walking through the Events and provide a reliable
- *     way to multiple threads access an EventIterator instance concurrently
+ *     way to multiple threads access an EventIterator instance concurrently.
+ *
+ *     Using this data structure we have O(1) time complexity for remove(), as we provide the position of the element.
+ *     Because is implemented as a double linked list, its performance on remove() is better than Arraylist,
+ *     but worse on get() method. Searching for an element takes O(n) time
+ *
+ *     Vector is similar with ArrayList, but it is synchronized. Vector and ArrayList require more space as
+ *     more elements are added.
+ *
+ *     We use LinkedList (not safe-thread) instead of Vector (synchronized), to gain a better performance, because we
+ *     can synchronize the LinkedList explicitly by ourselves.
  * </p>
+ *
  */
 public class EventIteratorList implements EventIterator {
 
@@ -27,6 +38,7 @@ public class EventIteratorList implements EventIterator {
     public boolean moveNext() {
 
         try {
+            // Every time needs to update the list size, because previous action could be a remove()
             this.currentSize = this.eventList.size();
         } catch (final NullPointerException e) {
             // Prevents null eventList

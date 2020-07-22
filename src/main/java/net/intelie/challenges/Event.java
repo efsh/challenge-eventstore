@@ -24,7 +24,7 @@ public class Event {
 
     @Override
     // improving the standard equals(Object) implementation we have a reliable method
-    // call .containsKey() in the hashmap
+    // call containsKey() in the hashmap
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
